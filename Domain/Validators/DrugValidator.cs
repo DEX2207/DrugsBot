@@ -1,14 +1,14 @@
-﻿using System.Net;
-using System.Text.RegularExpressions;
-using FluentValidation;
+﻿using FluentValidation;
 using Domain.Entities;
+using Domain.ValueObject;
+
 namespace Domain.Validators;
 
 /// <summary>
 /// TODO: по правилам описать валидацию всех объектов
 /// TODO: тест для валицации, тесты на xUNit
 /// </summary>
-public class DrugValidator:AbstractValidator<Drug>
+public sealed class DrugValidator:AbstractValidator<Drug>
 {
     public DrugValidator()
     {
@@ -27,7 +27,7 @@ public class DrugValidator:AbstractValidator<Drug>
     }
 }
 
-public class DrugItemValidator: AbstractValidator<DrugItem>
+public sealed class DrugItemValidator: AbstractValidator<DrugItem>
 {
     public DrugItemValidator()
     {
@@ -44,7 +44,7 @@ public class DrugItemValidator: AbstractValidator<DrugItem>
     }
 }
 
-public class DrugStoreValidator : AbstractValidator<DrugStore>
+public sealed class DrugStoreValidator : AbstractValidator<DrugStore>
 {
     public DrugStoreValidator()
     {
@@ -73,7 +73,7 @@ public class DrugStoreValidator : AbstractValidator<DrugStore>
     }
 }
 
-public class CountryValidator : AbstractValidator<Country>
+public sealed class CountryValidator : AbstractValidator<Country>
 {
     public CountryValidator()
     {
@@ -86,5 +86,49 @@ public class CountryValidator : AbstractValidator<Country>
             .NotNull().WithMessage(ValidatianMessage.NotNull)
             .NotEmpty().WithMessage(ValidatianMessage.NotEmpty)
             .Matches("^[A-Z]{2}$").WithMessage("Полу должно содержать только 2 заглавных латинских символа");
+    }
+}
+
+public sealed class ProfileValidator : AbstractValidator<Profile>
+{
+    public ProfileValidator()
+    {
+        RuleFor(d => d.ExternalId)
+            .NotEmpty().WithMessage(ValidatianMessage.NotEmpty)
+            .Length(2, 100).WithMessage(ValidatianMessage.WrongLenght);
+    }
+}
+
+public sealed class EmailValidator : AbstractValidator<Email>
+{
+    public EmailValidator()
+    {
+        RuleFor(d => d.Value)
+            .NotEmpty().WithMessage(ValidatianMessage.NotEmpty)
+            .Length(2, 255).WithMessage(ValidatianMessage.WrongLenght)
+            .Matches(@"^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$")
+            .WithMessage("{PropertyName} не является электронной почтой.");
+    }
+}
+
+public sealed class AddressValidator : AbstractValidator<Address>
+{
+    public AddressValidator()
+    {
+        RuleFor(d => d.City)
+            .NotEmpty().WithMessage(ValidatianMessage.NotEmpty)
+            .Length(2, 50).WithMessage(ValidatianMessage.WrongLenght)
+            .Matches(@"^[A-Za-z\s\-]+$").WithMessage(ValidatianMessage.OnlyLettersSpacesAndDashes);
+        RuleFor(d => d.Country)
+            .NotNull().WithMessage(ValidatianMessage.NotNull)
+            .NotEmpty().WithMessage(ValidatianMessage.NotEmpty);
+        RuleFor(d=>d.Street)
+            .NotEmpty().WithMessage(ValidatianMessage.NotEmpty)
+            .Length(3,100).WithMessage(ValidatianMessage.WrongLenght)
+            .Matches(@"^[A-Za-z0-9\s\-]+$").WithMessage(ValidatianMessage.OnlyLettersDigitsSpacesAndDashes);
+        RuleFor(a => a.House)
+            .NotEmpty().WithMessage(ValidatianMessage.NotEmpty)
+            .Length(1, 10).WithMessage(ValidatianMessage.WrongLenght)
+            .Matches(@"^[A-Za-z0-9\-]+$").WithMessage(ValidatianMessage.OnlyLettersDigitsAndDashes);
     }
 }

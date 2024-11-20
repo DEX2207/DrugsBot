@@ -1,4 +1,6 @@
 ﻿using System.Reflection;
+using FluentValidation;
+using ValidationException = System.ComponentModel.DataAnnotations.ValidationException;
 
 namespace Domain.ValueObject;
 /// <summary>
@@ -109,5 +111,15 @@ public abstract class BaseValueObject:IEquatable<BaseValueObject>
     public static bool operator !=(BaseValueObject? left, BaseValueObject? right)
     {
         return !(left == right);
+    }
+
+    protected void ValidateValueObject<T>(IValidator<T> validator) where T : BaseValueObject
+    {
+        var result = validator.Validate((T)this);
+        if (!result.IsValid)
+        {
+            var errors = string.Join("; ", result.Errors.Select(e => e.ErrorMessage));
+            throw new ValidationException($"Validation failed for {typeof(T).Name}: {errors}");
+        }
     }
 }

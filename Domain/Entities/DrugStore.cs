@@ -5,7 +5,7 @@ namespace Domain.Entities;
 /// <summary>
 /// Магазин лекарств
 /// </summary>
-public class DrugStore:BaseEntities
+public class DrugStore:BaseEntities<DrugStore>
 {
     /// <summary>
     /// Конструктор для инициализации магазина лекарств
@@ -21,7 +21,7 @@ public class DrugStore:BaseEntities
         Address = address;
         PhoneNumber = phoneNumber;
         
-        Validate();
+        ValidateEntity(new DrugStoreValidator());
     }
     
     /// <summary>
@@ -43,15 +43,4 @@ public class DrugStore:BaseEntities
     
     //Навигационное свойство для связи с DrugItem
     public ICollection<DrugItem> DrugItems { get; private set; } = new List<DrugItem>();
-    
-    private void Validate()
-    {
-        var validator = new DrugStoreValidator();
-        var result = validator.Validate(this);
-        if (!result.IsValid)
-        {
-            var errors = string.Join(" ", result.Errors.Select(x => x.ErrorMessage));
-            throw new ValidationException(errors);
-        }
-    }
 }

@@ -1,12 +1,13 @@
 ﻿using System.Net;
 using System.Text.RegularExpressions;
+using Domain.Validators;
 
 namespace Domain.ValueObject;
 /// <summary>
 /// Адрес магазина
 /// </summary>
 
-public class Address
+public class Address:BaseValueObject
 {
     /// <summary>
     /// Заполнение адреса из трех его составляющих
@@ -27,6 +28,8 @@ public class Address
         Street = street;
         House = house;
         PostalCode = postalCode;
+        
+        ValidateValueObject(new AddressValidator());
     }
 
     public string Country { get; private set; }

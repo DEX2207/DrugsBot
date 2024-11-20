@@ -8,10 +8,10 @@ namespace Domain.Entities;
 /// Лекарственные средства
 /// </summary>
 
-public class Drug:BaseEntities
+public class Drug:BaseEntities<Drug>
 {
     /// <summary>
-    /// Конструктор для инициализации прапарата
+    /// Конструктор для инициализации препарата
     /// </summary>
     /// <param name="name">Название препарата</param>
     /// <param name="manufacturer">Страна-Производитель</param>
@@ -29,7 +29,7 @@ public class Drug:BaseEntities
         CountryCodeID = Match.ToString();
         Country = country;
         
-        Validate();
+        ValidateEntity(new DrugValidator());
     }
     
     /// <summary>
@@ -51,15 +51,4 @@ public class Drug:BaseEntities
 
     //Навигационное свойство для связи с DrugItem
     public ICollection<DrugItem> DrugItems { get; private set; } = new List<DrugItem>();
-    
-    private void Validate()
-    {
-        var validator = new DrugValidator();
-        var result = validator.Validate(this);
-        if (!result.IsValid)
-        {
-            var errors = string.Join(" ", result.Errors.Select(x => x.ErrorMessage));
-            throw new ValidationException(errors);
-        }
-    }
 }

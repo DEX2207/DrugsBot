@@ -5,7 +5,7 @@ namespace Domain.Entities;
 /// Страна производитель
 /// </summary>
 
-public class Country:BaseEntities
+public class Country:BaseEntities<Country>
 {
     /// <summary>
     /// Инициализация страны с ее названием и кодом
@@ -17,7 +17,7 @@ public class Country:BaseEntities
         Name = name;
         Code = code;
         
-        Validate();
+        ValidateEntity(new CountryValidator());
     }
     
     /// <summary>
@@ -31,15 +31,4 @@ public class Country:BaseEntities
 
     //Навигационное свойство для связи с препаратами
     public ICollection<Drug> Drugs { get; private set; } = new List<Drug>();
-    
-    private void Validate()
-    {
-        var validator = new CountryValidator();
-        var result = validator.Validate(this);
-        if (!result.IsValid)
-        {
-            var errors = string.Join(" ", result.Errors.Select(x => x.ErrorMessage));
-            throw new ValidationException(errors);
-        }
-    }
 }

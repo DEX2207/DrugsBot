@@ -1,10 +1,12 @@
 ﻿using Domain.Validators;
 using System.ComponentModel.DataAnnotations;
+using Domain.DomainEvents;
+
 namespace Domain.Entities;
 /// <summary>
 /// Единица лекарства
 /// </summary>
-public class DrugItem:BaseEntities
+public class DrugItem:BaseEntities<DrugItem>
 {
     /// <summary>
     /// Конструктор для инициализации единицы лекарства
@@ -13,14 +15,16 @@ public class DrugItem:BaseEntities
     /// <param name="drugStoreId">Идентификатор магазина лекарств</param>
     /// <param name="count">Количество препарата</param>
     /// <param name="cost">Цена</param>
-    public DrugItem(Guid drugId,Guid drugStoreId,int count,decimal cost)
+    public DrugItem(Guid drugId,Guid drugStoreId,double count,decimal cost,Drug drug, DrugStore drugStore)
     {
         DrugID = drugId;
         DrugStoreID = drugStoreId;
         Count = count;
         Cost = cost;
+        Drug = drug;
+        DrugStore = drugStore;
         
-        Validate();
+        ValidateEntity(new DrugItemValidator());
     }
     
     /// <summary>
@@ -34,7 +38,7 @@ public class DrugItem:BaseEntities
     /// <summary>
     /// Количество препарата на складе
     /// </summary>
-    public int Count { get; private set; }
+    public double Count { get; private set; }
     /// <summary>
     /// Цена
     /// </summary>
@@ -54,4 +58,13 @@ public class DrugItem:BaseEntities
     //Навигационные свойства для связи с Drug и DrugStore
     public Drug Drug { get; private set; }
     public DrugStore DrugStore { get; private set; }
+
+    public void UpdateDrugCount(double count)
+    {
+        Count = count;
+        
+        ValidateEntity(new DrugItemValidator());
+        
+        AddDomainEvent(new DrugItemUpdatedEvent());
+    }
 }
