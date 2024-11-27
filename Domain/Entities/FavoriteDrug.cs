@@ -2,9 +2,9 @@
 
 public class FavoriteDrug : BaseEntities<FavoriteDrug>
 {
-    public FavoriteDrug(Guid profileid,Guid drugId, Drug drug,Guid? drugStoreId,DrugStore? drugStore, Profile profile)
+    public FavoriteDrug(Guid profileId,Guid drugId, Drug drug,Guid? drugStoreId,DrugStore? drugStore, Profile profile)
     {
-        ProfileId = profileid;
+        ProfileId = profileId;
         DrugId = drugId;
         DrugStoreId = drugStoreId;
         Profile = profile;
@@ -21,9 +21,9 @@ public class FavoriteDrug : BaseEntities<FavoriteDrug>
     public Drug Drug { get; private set; }
     public DrugStore? DrugStore { get; private set; }
     
-    public void Update(Guid profileid,Guid drugId, Drug drug,Guid? drugStoreId,DrugStore? drugStore, Profile profile)
+    public void Update(Guid profileId,Guid drugId, Drug drug,Guid? drugStoreId,DrugStore? drugStore, Profile profile)
     {
-        ProfileId = profileid;
+        ProfileId = profileId;
         DrugId = drugId;
         DrugStoreId = drugStoreId;
         Profile = profile;
