@@ -41,6 +41,16 @@ public class DrugStore:BaseEntities<DrugStore>
     /// </summary>
     public string PhoneNumber { get; private set; }
     
+    public void Update(string drugNetwork, int number, Address address, string phoneNumber)
+    {
+        DrugNetwork = drugNetwork;
+        Number = number;
+        Address = address;
+        PhoneNumber = phoneNumber;
+        
+        ValidateEntity(new DrugStoreValidator());
+    }
+    
     //Навигационное свойство для связи с DrugItem
     public ICollection<DrugItem> DrugItems { get; private set; } = new List<DrugItem>();
 }

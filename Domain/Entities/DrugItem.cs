@@ -43,17 +43,6 @@ public class DrugItem:BaseEntities<DrugItem>
     /// Цена
     /// </summary>
     public decimal Cost { get; private set; }
-    
-    private void Validate()
-    {
-        var validator = new DrugItemValidator();
-        var result = validator.Validate(this);
-        if (!result.IsValid)
-        {
-            var errors = string.Join(" ", result.Errors.Select(x => x.ErrorMessage));
-            throw new ValidationException(errors);
-        }
-    }
 
     //Навигационные свойства для связи с Drug и DrugStore
     public Drug Drug { get; private set; }
@@ -66,5 +55,16 @@ public class DrugItem:BaseEntities<DrugItem>
         ValidateEntity(new DrugItemValidator());
         
         AddDomainEvent(new DrugItemUpdatedEvent());
+    }
+
+    public void Update(Guid drugId, Guid drugStoreId, double count, decimal cost, Drug drug, DrugStore drugStore)
+    {
+        DrugID = drugId;
+        DrugStoreID = drugStoreId;
+        Count = count;
+        Drug = drug;
+        DrugStore = drugStore;
+        
+        UpdateDrugCount(count);
     }
 }

@@ -20,4 +20,14 @@ public class FavoriteDrug : BaseEntities<FavoriteDrug>
     public Profile Profile { get; private set; }
     public Drug Drug { get; private set; }
     public DrugStore? DrugStore { get; private set; }
+    
+    public void Update(Guid profileid,Guid drugId, Drug drug,Guid? drugStoreId,DrugStore? drugStore, Profile profile)
+    {
+        ProfileId = profileid;
+        DrugId = drugId;
+        DrugStoreId = drugStoreId;
+        Profile = profile;
+        Drug = drug;
+        DrugStore = drugStore;
+    }
 }

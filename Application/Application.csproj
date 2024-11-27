@@ -7,10 +7,17 @@
     </PropertyGroup>
 
     <ItemGroup>
-      <PackageReference Include="FluentValidation" Version="11.10.0" />
       <PackageReference Include="MediatR" Version="12.4.1" />
-      <PackageReference Include="MediatR.Contracts" Version="2.0.1" />
+      <PackageReference Include="Microsoft.AspNetCore.OData" Version="9.1.1" />
       <PackageReference Include="Microsoft.Data.Services.Client" Version="5.8.5" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <ProjectReference Include="..\Domain\Domain.csproj" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <Folder Include="UseCases\Commands\FavoriteDrugCommands\" />
     </ItemGroup>
 
 </Project>

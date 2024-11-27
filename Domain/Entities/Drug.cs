@@ -48,6 +48,17 @@ public class Drug:BaseEntities<Drug>
     //Навигационное свойство для связи с Country
     public Country Country { get; private set; }
     
+    public void Update(string name, string manufacturer, string countryCodeId, Country country)
+    {
+        Match = Regex.Match(countries, countryCodeId , RegexOptions.Singleline);
+        
+        Name = name;
+        Manufacturer = manufacturer;
+        CountryCodeID = Match.ToString();
+        Country = country;
+        
+        ValidateEntity(new DrugValidator());
+    }
 
     //Навигационное свойство для связи с DrugItem
     public ICollection<DrugItem> DrugItems { get; private set; } = new List<DrugItem>();
